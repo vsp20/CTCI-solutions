@@ -142,6 +142,62 @@ public class Ch1Solutions {
  }
 
 
+ /* Question 1.5
+ * Here i made three base cases, one if s1 == s2, one if s1 > s2, and one if s2 < s1
+ * if s1 == s2, i checked if they were the same string or had only one difference
+ * if s1 > s2, i first checked if s1 was more than 2 characters greater, (oneAway = false)
+ * then i checked if is s1 == s2 by character, if so increment i and j, else i increments and j stays the same
+ * if s2 > s1 then i called the same function where s2 was now s1 and vise versa.
+  */
+ public boolean oneAway(String s1, String s2){
+
+     boolean oneAway = true;
+     boolean oneFalse = false;
+     if (s1.length() == s2.length()){
+         for (int i = 0; i < s1.length(); i++){
+             if (s1.charAt(i) != s2.charAt(i)){
+                 if (!oneFalse){
+                     oneFalse = true;
+                 }
+                 else{
+                     oneAway = false;
+                 }
+             }
+         }
+     }
+     if (s1.length() > s2.length()){
+         if (s1.length() > s2.length()+1){
+             oneAway = false;
+         }
+         else{
+             int i = 0;
+             int j = 0;
+             while(i < s1.length()-1 || j < s2.length()){
+                 if (s1.charAt(i) == s2.charAt(j)){
+                     i++;
+                     j++;
+                 }
+                 else{
+                     if(!oneFalse){
+                         oneFalse = true;
+                         i++;
+                     }
+                     else{
+                         oneAway = false;
+                         break;
+                     }
+                 }
+             }
+         }
+     }
+     if (s1.length() < s2.length()){
+         return oneAway(s2,s1);
+     }
+     System.out.println(oneAway);
+     return oneAway;
+ }
+
+
  
  public String reverseString(String s){
   StringBuilder sb = new StringBuilder();
@@ -166,5 +222,6 @@ public class Ch1Solutions {
  a.isPermutation("hello", "helol");
  a.URLify("vsp vish ");
  a.isPermutationOfPalindrome("tactcoa");
+ a.oneAway("pales","pale");
  }
 }
