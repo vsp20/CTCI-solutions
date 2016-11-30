@@ -198,6 +198,45 @@ public class Ch1Solutions {
  }
 
 
+ /* Question 1.6
+  * First I declared isOriginal for the case that there are no character repeats;
+  * becomes false when a repeat is found;
+  * Next the loop iterates through the string, stopping at s.length()-1 because we look at the next character too
+  * I have a counter counting the amount of same characters in a row, when it hits an end it resets the counter to 1
+  * and appends to the string builder.
+  * String builder is used because it allows us to build the string as we go.
+  */
+ public String stringCompression(String s){
+     boolean isOriginal = true;
+     StringBuilder sb = new StringBuilder();
+     int counter = 1;
+     for (int i = 0; i < s.length()-1; i++){
+         if (i+1  == s.length() - 1 )
+             counter++;
+         if (s.charAt(i) == s.charAt(i+1) && (i+1) != (s.length() - 1)){
+             counter++;
+             isOriginal = false;
+         }
+         else{
+             sb.append(s.charAt(i));
+             sb.append(counter);
+             counter = 1;
+         }
+
+     }
+     if (isOriginal){
+         System.out.println(s);
+         return s;
+
+     }
+     else {
+         System.out.println(sb.toString());
+         return sb.toString();
+
+     }
+ }
+
+
  
  public String reverseString(String s){
   StringBuilder sb = new StringBuilder();
@@ -210,7 +249,8 @@ public class Ch1Solutions {
  return sb.toString();
  }
 
- 
+
+
  
  
  
@@ -223,5 +263,6 @@ public class Ch1Solutions {
  a.URLify("vsp vish ");
  a.isPermutationOfPalindrome("tactcoa");
  a.oneAway("pales","pale");
+ a.stringCompression("aabcccccaaa");
  }
 }
