@@ -1,120 +1,333 @@
 /**
  * Created by Vishal on 12/5/16.
  */
-/**
- * A class to represent a linked list of nodes.
- */
-public class LinkedList<T> {
-    /** the first node of the list, or null if the list is empty */
-    private LLNode<T> first;
+import java.util.*;
+
+public class LinkedList<AnyType> implements Iterable<AnyType> {
+    private Node<AnyType> head;
 
     /**
-     * Creates an initially empty linked list
+     * Constructs an empty list
      */
     public LinkedList() {
-        first = null;
+        head = null;
     }
 
     /**
-     * Returns the first node.
-     */
-    protected LLNode<T> getFirst() {
-        return first;
-    }
-
-    /**
-     * Changes the first node.
-     * @param node  the node that will be the first node of the new linked list
-     */
-    protected void setFirst(LLNode<T> node) {
-        this.first = node;
-    }
-
-    /**
-     * Add an element to the front of the linked list
-     */
-    public void addToFront(T element) {
-        setFirst(new LLNode<T>(element, getFirst()));
-    }
-
-    /**
-     * Return whether the list is empty
-     * @return true if the list is empty
+     * Returns true if the list is empty
      */
     public boolean isEmpty() {
-        return (getFirst() == null);
+        return head == null;
     }
 
     /**
-     * Returns the length of the linked list
-     * @return the number of nodes in the list
+     * Inserts a new node at the beginning of this list.
      */
-    public int length() {
-        int lengthSoFar = 0;
-        LLNode<T> nodeptr = getFirst();
-        while (nodeptr != null) {
-            lengthSoFar++;
-            nodeptr = nodeptr.getNext();
-        }
-        return lengthSoFar;
-    }
-
-  /*-------------------------------------------*/
-  /* THE NEXT METHODS WILL BE COMPLETED IN LAB */
-  /*-------------------------------------------*/
-
-    /**
-     * Returns a String representation of the list
-     * @return a String representing the list
-     */
-    public String toString() {
-        return null;
+    public void addFirst(AnyType item) {
+        head = new Node<AnyType>(item, head);
     }
 
     /**
-     * Determines whether an element is stored in the list
-     * @param element  the element to search for in the list
-     * @return true if and only if the parameter element is in the list
+     * Returns the first element in the list.
      */
-    public boolean contains(T element) {
-        LLNode<T> nodeptr = getFirst();
-        if (this.getFirst() == null){
-            return false;
+    public AnyType getFirst() {
+        if (head == null) throw new NoSuchElementException();
+
+        return head.data;
+    }
+
+    /**
+     * Removes the first element in the list.
+     */
+    public AnyType removeFirst() {
+        AnyType tmp = getFirst();
+        head = head.next;
+        return tmp;
+    }
+
+    /**
+     * Inserts a new node to the end of this list.
+     */
+    public void addLast(AnyType item) {
+        if (head == null)
+            addFirst(item);
+        else {
+            Node<AnyType> tmp = head;
+            while (tmp.next != null) tmp = tmp.next;
+
+            tmp.next = new Node<AnyType>(item, null);
         }
-        for (int i = 0; i < this.length(); i++){
-            if (nodeptr.getElement() == element){
-                return true;
-            }
-            nodeptr = nodeptr.getNext();
-        }
+    }
+
+    /**
+     * Returns the last element in the list.
+     */
+    public AnyType getLast() {
+        if (head == null) throw new NoSuchElementException();
+
+        Node<AnyType> tmp = head;
+        while (tmp.next != null) tmp = tmp.next;
+
+        return tmp.data;
+    }
+
+    /**
+     * Removes all nodes from the list.
+     */
+    public void clear() {
+        head = null;
+    }
+
+    /**
+     * Returns true if this list contains the specified element.
+     */
+    public boolean contains(AnyType x) {
+        for (AnyType tmp : this)
+            if (tmp.equals(x)) return true;
 
         return false;
     }
 
     /**
-     * Deletes the first occurrance of an element in the list.
-     * If the element is not in the list, the list is unchanged.
-     * @param element  the element to remove
+     * Returns the data at the specified position in the list.
      */
-    public void remove(T element) {
+    public AnyType get(int pos) {
+        if (head == null) throw new IndexOutOfBoundsException();
+
+        Node<AnyType> tmp = head;
+        for (int k = 0; k < pos; k++) tmp = tmp.next;
+
+        if (tmp == null) throw new IndexOutOfBoundsException();
+
+        return tmp.data;
     }
 
-    /*
-    public void reverse(){
-      LLNode<T> Current = this.getFirst();
-      LLNode<T> D = Current.getNext();
-      LLNode<T> P = D.getNext();
-      while (P != null){
-       if (Current == this.getFirst()){
-       Current.setNext(null);
-       }
-       D.setNext(Current);
-       Current = D;
-       D = P;
-       P = P.getNext();
-      }
+    /**
+     * Returns a string representation
+     */
+    public String toString() {
+        StringBuffer result = new StringBuffer();
+        for (Object x : this)
+            result.append(x + " ");
 
+        return result.toString();
+    }
+
+    /**
+     * Inserts a new node after a node containing the key.
+     */
+    public void insertAfter(AnyType key, AnyType toInsert) {
+        Node<AnyType> tmp = head;
+
+        while (tmp != null && !tmp.data.equals(key)) tmp = tmp.next;
+
+        if (tmp != null)
+            tmp.next = new Node<AnyType>(toInsert, tmp.next);
+    }
+
+    /**
+     * Inserts a new node before a node containing the key.
+     */
+    public void insertBefore(AnyType key, AnyType toInsert) {
+        if (head == null) return;
+
+        if (head.data.equals(key)) {
+            addFirst(toInsert);
+            return;
+        }
+
+        Node<AnyType> prev = null;
+        Node<AnyType> cur = head;
+
+        while (cur != null && !cur.data.equals(key)) {
+            prev = cur;
+            cur = cur.next;
+        }
+        //insert between cur and prev
+        if (cur != null)
+            prev.next = new Node<AnyType>(toInsert, cur);
+    }
+
+    /**
+     * Removes the first occurrence of the specified element in this list.
+     */
+    public void remove(AnyType key) {
+        if (head == null)
+            throw new RuntimeException("cannot delete");
+
+        if (head.data.equals(key)) {
+            head = head.next;
+            return;
+        }
+
+        Node<AnyType> cur = head;
+        Node<AnyType> prev = null;
+
+        while (cur != null && !cur.data.equals(key)) {
+            prev = cur;
+            cur = cur.next;
+        }
+
+        if (cur == null)
+            throw new RuntimeException("cannot delete");
+
+        //delete cur node
+        prev.next = cur.next;
+    }
+
+    /**
+     * Returns a deep copy of the list
+     * Complexity: O(n^2)
+     */
+    public LinkedList<AnyType> copy1() {
+        LinkedList<AnyType> twin = new LinkedList<AnyType>();
+        Node<AnyType> tmp = head;
+        while (tmp != null) {
+            twin.addLast(tmp.data);
+            tmp = tmp.next;
+        }
+
+        return twin;
+    }
+
+    /**
+     * Returns a deep copy of the list
+     * Complexity: O(n)
+     */
+    public LinkedList<AnyType> copy2() {
+        LinkedList<AnyType> twin = new LinkedList<AnyType>();
+        Node<AnyType> tmp = head;
+        while (tmp != null) {
+            twin.addFirst(tmp.data);
+            tmp = tmp.next;
+        }
+
+        return twin.reverse();
+    }
+
+    /**
+     * Reverses the list
+     * Complewxity: O(n)
+     */
+    public LinkedList<AnyType> reverse() {
+        LinkedList<AnyType> list = new LinkedList<AnyType>();
+        Node<AnyType> tmp = head;
+        while (tmp != null) {
+            list.addFirst(tmp.data);
+            tmp = tmp.next;
+        }
+        return list;
+    }
+
+    /**
+     * Returns a deep copy of the immutable list
+     * It uses a tail reference.
+     * Complexity: O(n)
+     */
+    public LinkedList<AnyType> copy3() {
+        LinkedList<AnyType> twin = new LinkedList<AnyType>();
+        Node<AnyType> tmp = head;
+        if (head == null) return null;
+        twin.head = new Node<AnyType>(head.data, null);
+        Node<AnyType> tmpTwin = twin.head;
+        while (tmp.next != null) {
+            tmp = tmp.next;
+            tmpTwin.next = new Node<AnyType>(tmp.data, null);
+            tmpTwin = tmpTwin.next;
+        }
+
+        return twin;
+    }
+
+    /*******************************************************
+     *
+     *  The Node class
+     *
+     ********************************************************/
+    private static class Node<AnyType> {
+        private AnyType data;
+        private Node<AnyType> next;
+
+        public Node(AnyType data, Node<AnyType> next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+
+    /*******************************************************
+     *
+     *  The Iterator class
+     *
+     ********************************************************/
+
+    public Iterator<AnyType> iterator() {
+        return new LinkedListIterator();
+    }
+
+    private class LinkedListIterator implements Iterator<AnyType> {
+        private Node<AnyType> nextNode;
+
+        public LinkedListIterator() {
+            nextNode = head;
+        }
+
+        public boolean hasNext() {
+            return nextNode != null;
+        }
+
+        public AnyType next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            AnyType res = nextNode.data;
+            nextNode = nextNode.next;
+            return res;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    /* Question 2.1
+     * In order to delete duplicates we need a way to store the ones that have already appeared (HashTable)
+     * Basically the main concept is to loop through the list and if it already "contains" the number, delete it
+     * else add it to the table. This takes O(N) only iterating through one time.
+     * Should probably always declare a previous node to delete and edit the list.
+     */
+    public void deleteDups(Node n) {
+        HashSet<Integer> set = new HashSet<Integer>();
+        Node previous = null;
+        while (n != null) {
+            if (set.contains(n.data)) {
+                previous.next = n.next;
+
+            } else {
+                set.add((Integer) n.data);
+                previous = n;
+            }
+            n = n.next;
+        }
 
     }
-    */
+    public void print(){
+        Node n = head;
+        while (n != null){
+            System.out.print(n.data);
+            n = n.next;
+        }
+        System.out.println();
+
+    }
+
+
+    public static void main(String[] args){
+        LinkedList<Integer> a = new LinkedList<Integer>();
+        a.addFirst(3);
+        a.addLast(4);
+        a.addLast(3);
+        a.addLast(5);
+        a.print();
+        a.deleteDups(a.head);
+        a.print();
+    }
 }
+
