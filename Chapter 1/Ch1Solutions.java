@@ -249,6 +249,13 @@ public class Ch1Solutions {
  return sb.toString();
  }
 
+ /* Question 1.9
+  * This question has no code because it uses a method we don't have access to
+  * however, the way to solve this is, isRotation checks if its a rotation, so we create
+  * a new string s1s1 = s1 + s1; because s2 will then have to be a substring of that if it is
+  * indeed a rotation of that. Then you just call isSubstring and check just that.
+  */
+
 
 
  
