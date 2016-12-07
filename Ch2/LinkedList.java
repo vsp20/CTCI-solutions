@@ -309,6 +309,25 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
         }
 
     }
+
+    /* Question 2.2
+     * For this we can use a runner
+     * runner should basically be k-1 elements ahead so that when runner hits the end of the list
+     * n should be pointing to the wanted Node
+     */
+    public Object kthLast(int k) {
+        Node n = this.head;
+        Node runner = this.head;
+        for (int i = 0; i < k-1; i++) {
+            runner = runner.next;
+        }
+        while (runner.next != null){
+            runner = runner.next;
+            n = n.next;
+        }
+        System.out.println(n.data);
+        return n.data;
+    }
     public void print(){
         Node n = head;
         while (n != null){
@@ -322,6 +341,7 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
 
     public static void main(String[] args){
         LinkedList<Integer> a = new LinkedList<Integer>();
+        LinkedList<Integer> b = new LinkedList<Integer>();
         a.addFirst(3);
         a.addLast(4);
         a.addLast(3);
@@ -329,6 +349,14 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
         a.print();
         a.deleteDups(a.head);
         a.print();
+        b.addFirst(3);
+        b.addLast(4);
+        b.addLast(5);
+        b.addLast(6);
+        b.addLast(7);
+        b.print();
+        b.kthLast(3);
+
     }
 }
 
