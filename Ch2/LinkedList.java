@@ -328,6 +328,26 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
         System.out.println(n.data);
         return n.data;
     }
+
+    /*  Question 2.3
+     * Basically this deletes a node without being able to access the head or previous nodes
+     * so what i did was take the next node and basically copied that to the given node, then deleted
+     * the next node.
+     * Here we use the fact that n.previous points to n.
+     *
+     */
+    public void deleteMiddle(Node n) {
+        if (n.next == null || n.next.next == null){
+
+        }
+        else{
+            Node next = n.next;
+            n.data = next.data;
+            n.next = next.next;
+
+        }
+
+    }
     public void print(){
         Node n = head;
         while (n != null){
@@ -356,7 +376,8 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
         b.addLast(7);
         b.print();
         b.kthLast(3);
-
+        b.deleteMiddle(b.head.next);
+        b.print();
     }
 }
 
