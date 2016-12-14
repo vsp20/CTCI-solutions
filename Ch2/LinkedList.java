@@ -348,6 +348,73 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
         }
 
     }
+    /* Question 2.4
+     * The way i went about this was adding any number < x to the front of the list and any
+     * number >= x to the back of the list.
+     * Be sure to set tail.next = null when finished with making lists like these because it will
+     * end in an infinite loop
+     * Also since we are tampering with n.next, use a next variable to store the real n.next at the beginning of the loop
+     */
+    public void partition(Node n, int x){
+        Node head = n;
+        Node tail = n;
+        while (n != null){
+            Node next = n.next;
+            if ((int)n.data >= x){
+                tail.next = n;
+                tail = n;
+            }
+            else{
+                n.next = head;
+                head = n;
+            }
+            n = next;
+
+        }
+        tail.next = null;
+        Node node = head;
+        while (node != null){
+            System.out.print(node.data);
+            node = node.next;
+        }
+        System.out.println();
+
+    }
+
+
+    public void sumList(Node n1, Node n2){
+        Node n3 = null;
+        boolean carry = false;
+        int count = 0;
+        Node n3head = null;
+        while (n1 != null && n2 != null){
+            int sum = (int)n1.data + (int)n2.data;
+            if (carry){
+                sum = sum + 1;
+            }
+            carry = false;
+            if (sum >= 10){
+                carry = true;
+                sum = sum - 10;
+            }
+            n3.data = sum;
+            if (count == 0){
+                n3head = n3;
+            }
+            n3 = n3.next;
+            count++;
+        }
+        while (n3head != null){
+            System.out.print(n3head.data);
+            n3head = n3head.next;
+        }
+        System.out.println();
+
+    }
+
+
+
+
     public void print(){
         Node n = head;
         while (n != null){
@@ -362,6 +429,9 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
     public static void main(String[] args){
         LinkedList<Integer> a = new LinkedList<Integer>();
         LinkedList<Integer> b = new LinkedList<Integer>();
+        LinkedList<Integer> c = new LinkedList<Integer>();
+        LinkedList<Integer> d = new LinkedList<Integer>();
+        LinkedList<Integer> e = new LinkedList<Integer>();
         a.addFirst(3);
         a.addLast(4);
         a.addLast(3);
@@ -378,6 +448,23 @@ public class LinkedList<AnyType> implements Iterable<AnyType> {
         b.kthLast(3);
         b.deleteMiddle(b.head.next);
         b.print();
+        c.addFirst(3);
+        c.addLast(5);
+        c.addLast(8);
+        c.addLast(5);
+        c.addLast(9);
+        c.addLast(2);
+        c.addLast(1);
+        c.print();
+        c.partition(c.head, 5);
+        d.addFirst(7);
+        d.addLast(1);
+        d.addLast(6);
+        e.addFirst(2);
+        e.addLast(9);
+        e.addLast(5);
+        a.sumList(d.head,e.head);
+
     }
 }
 
